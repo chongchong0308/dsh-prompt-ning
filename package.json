@@ -1,0 +1,55 @@
+{
+  "name": "dsh-prompt-ning",
+  "version": "0.1.0",
+  "description": "DSH prompt plugin: inject a prompt into DeepSeek Harness with tiered fallback so it survives host upgrades.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "dsh-prompt": "bin/dsh-prompt.js"
+  },
+  "files": [
+    "lib",
+    "bin",
+    "prompt",
+    "probes",
+    "scripts",
+    "cordis.patch.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "inject": "node scripts/inject.mjs",
+    "inject:dry": "node scripts/inject.mjs --dry-run",
+    "probes": "node scripts/probes.mjs",
+    "score": "node scripts/probes.mjs --score"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "install": {
+      "preferred": "tarball",
+      "tarball": "https://github.com/chongchong0308/dsh-prompt-ning/archive/refs/heads/main.tar.gz",
+      "zip": "https://github.com/chongchong0308/dsh-prompt-ning/archive/refs/heads/main.zip",
+      "git": "https://github.com/chongchong0308/dsh-prompt-ning.git"
+    }
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    }
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT"
+}

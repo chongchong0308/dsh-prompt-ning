@@ -1,0 +1,11 @@
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+# 本地状态与备份不进仓库
+.dsh-prompt/
+backups/
+runs/
+runs-*/
+.tmp/

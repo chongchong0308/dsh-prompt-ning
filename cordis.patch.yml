@@ -1,0 +1,16 @@
+# dsh-prompt 插件挂载声明
+#
+# 只做一件事：把提示词按三档降级注入宿主。
+# 默认 autoApplyOnStart=false —— 装上不动手，等你确认后再开。
+
+- insert:
+    - id: dsh-prompt
+      name: 'dsh-prompt-ning'
+      inject: [systemPrompt]
+      config:
+        enabled: true
+        tier: auto
+        autoApplyOnStart: false
+        watchdog: true
+        maxAgeHours: 72
+        verbose: false

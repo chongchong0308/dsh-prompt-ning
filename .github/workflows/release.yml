@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.repository }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Static checks
+        run: node scripts/check.mjs
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          tag="v${version}"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "already published: $tag"
+            exit 0
+          fi
+          zip="dsh-prompt-${version}.zip"
+          git archive --format=zip --prefix="dsh-prompt-${version}/" --output="$zip" HEAD
+          gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes "See CHANGELOG.md"
+          gh release upload "$tag" "$zip" --clobber
+          echo "published https://github.com/${GITHUB_REPOSITORY}/releases/tag/${tag}"
