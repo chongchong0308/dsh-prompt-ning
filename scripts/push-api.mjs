@@ -106,7 +106,8 @@ for (const file of files) {
 }
 
 const treeBody = { tree: entries };
-if (baseTree) treeBody.base_tree = baseTree;
+// --fresh：不继承旧树，远端内容与本地完全一致（用于删文件后的重建）
+if (baseTree && !args.includes("--fresh")) treeBody.base_tree = baseTree;
 const tree = await gh("POST", `/repos/${owner}/${repo}/git/trees`, treeBody);
 console.log(`tree   -> ${tree.sha}`);
 

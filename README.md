@@ -63,6 +63,22 @@ npm run score -- ./runs/v0.1.0   # 自动判"无禁用串"这一项
 
 发布门槛：30 条探针 × 4 维 = 120 分，**低于 108 不发版**。H（命中类别）/ A（有交付物）/ D（无降级）必须人看，N（无禁用串）可脚本判。
 
+## 推送
+
+`github.com:443` 在某些网络下不可达，但 `api.github.com` 通常通。两条通道都备着：
+
+```powershell
+# 通道 1：git push（网络通时）
+.\push.ps1 -Repo "<owner>/<repo>" -Token "<token>"
+
+# 通道 2：GitHub API（github.com 连不上时，本机就是这种情况）
+$env:GH_TOKEN = "<token>"
+node scripts/push-api.mjs --owner <owner> --repo <repo>          # 增量
+node scripts/push-api.mjs --owner <owner> --repo <repo> --fresh  # 全量覆盖（删过文件后用）
+```
+
+token 只出现在命令行里，不写进 `.git/config`。
+
 ## 兼容表
 
 每跑完一个宿主版本就往这里加一行。这张表就是"它是否还活着"的证据。
